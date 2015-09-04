@@ -79,5 +79,6 @@ public class GamePad {
 
 	public void setController(Controller c) {
 		this.controller = c;
+		System.out.println("controller set to " + c);
 	}
 }

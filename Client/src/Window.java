@@ -3,18 +3,22 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import net.java.games.input.Controller;
 
-public class Window extends JFrame {
+public class Window extends JFrame /*implements KeyListener*/ {
 	static Window window;
 	GuiPanel[] gps = new GuiPanel[4];
 	JFrame devicesConnected;
 	GamePadManager manager = GamePadManager.getManager();
 	Thread networkThread, gamePadThread, socketCreatorThread;
+	
+//	boolean isEnabled = false;
 
 	public Window(String title) {
 		super(title);
@@ -25,6 +29,7 @@ public class Window extends JFrame {
 	private void setup() {
 		this.setSize(500, 500);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+//		this.addKeyListener(this);
 		this.setLayout(new GridLayout(2, 2));
 		for (int i = 0; i < 4; i++) {
 			gps[i] = new GuiPanel(i + 1);
@@ -38,6 +43,7 @@ public class Window extends JFrame {
 		disableAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+//				Window.this.isEnabled = false;
 				ConnectionRunner.getRunner().DisableAll();
 			}
 		});
@@ -45,6 +51,7 @@ public class Window extends JFrame {
 		enableAll.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+//				Window.this.isEnabled = true;
 				ConnectionRunner.getRunner().EnableAll();
 			}
 		});
@@ -109,5 +116,28 @@ public class Window extends JFrame {
 			}
 		}
 	}
+
+//	@Override
+//	public void keyPressed(KeyEvent arg0) {
+//		if (arg0.getKeyCode() == KeyEvent.VK_SPACE) {
+//			if (isEnabled) {
+//				ConnectionRunner.getRunner().DisableAll();
+//			} else {
+//				ConnectionRunner.getRunner().EnableAll();
+//			}
+//		}
+//	}
+//
+//	@Override
+//	public void keyReleased(KeyEvent arg0) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void keyTyped(KeyEvent arg0) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 }

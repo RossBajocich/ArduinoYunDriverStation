@@ -100,6 +100,7 @@ public class GamePadManager implements Runnable {
 	public Controller getNextAvailableController() {
 		for (int x = 0; x < 4; x++) {
 			for (Controller c : found) {
+				System.out.println("Controller " + c.getName());
 				c.poll();
 				Component[] components = c.getComponents();
 				for (int i = 0; i < components.length; i++) {
@@ -120,8 +121,12 @@ public class GamePadManager implements Runnable {
 					}
 				}
 			}
-		}
-
+		}/*
+		for(Controller c : found){
+			if(c.getName().trim() == "Gamepad F310 (Controller)"){
+				return c;
+			}
+		}*/
 		return null;
 	}
 
