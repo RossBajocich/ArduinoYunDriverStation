@@ -93,8 +93,10 @@ public class Window extends JFrame /*implements KeyListener*/ {
 
 	private void startThreads() {
 		networkThread = new Thread(ConnectionRunner.getRunner());
+		networkThread.setPriority(Thread.MAX_PRIORITY);
 		networkThread.start();
 		gamePadThread = new Thread(GamePadManager.getManager());
+		gamePadThread.setPriority(Thread.MAX_PRIORITY);
 		gamePadThread.start();
 		socketCreatorThread = new Thread(SocketCreator.getSocketCreator());
 		socketCreatorThread.setPriority(Thread.MIN_PRIORITY);
@@ -106,7 +108,7 @@ public class Window extends JFrame /*implements KeyListener*/ {
 	}
 
 	public static void main(String args[]) {
-		window = new Window("ArduinoYun DriverStation 2015");
+		window = new Window("ArduinoYun DriverStation");
 		while (true) {
 			window.updatePanels();
 			try {
