@@ -3,9 +3,9 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import net.java.games.input.Component;
+import net.java.games.input.Component.Identifier;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
-import net.java.games.input.Component.Identifier;
 
 public class GamePadManager implements Runnable {
 	List<Controller> found = new ArrayList<Controller>();
@@ -36,10 +36,9 @@ public class GamePadManager implements Runnable {
 		for (int i = 0; i < controllers.length; i++) {
 			Controller controller = controllers[i];
 
-			if (controller.getType() == Controller.Type.STICK || controller.getType() == Controller.Type.GAMEPAD
-					|| controller.getType() == Controller.Type.WHEEL
-					|| controller.getType() == Controller.Type.FINGERSTICK) {
-				// Add new controller to the list of all controllers.
+			System.out.println(controller.getType().toString());
+
+			if (controller.getType() == Controller.Type.STICK || controller.getType() == Controller.Type.GAMEPAD) {
 				found.add(controller);
 			}
 		}
@@ -74,10 +73,8 @@ public class GamePadManager implements Runnable {
 		while (!stop.get()) {
 			for (GamePad g : gamePads) {
 				g.poll();
-				// System.out.println("polled " + g.getID());
 			}
-			// System.out.println("size gamePads " + gamePads.size());
-			// TODO: change this value
+
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
@@ -86,48 +83,41 @@ public class GamePadManager implements Runnable {
 		}
 	}
 
-	public Pair viewNextPair(int id) {
-		if (getGamePad(id) != null) {
-			return getGamePad(id).viewNextPair();
-		}
-		return new Pair(-420.0, -420.0);
-	}
-
-	public Pair getNextPair(int id) {
-		return getGamePad(id).getNextPair();
-	}
-
 	public Controller getNextAvailableController() {
-		for (int x = 0; x < 4; x++) {
-			for (Controller c : found) {
-				System.out.println("Controller " + c.getName());
-				c.poll();
-				Component[] components = c.getComponents();
-				for (int i = 0; i < components.length; i++) {
-					Component component = components[i];
-					Identifier componentIdentifier = component.getIdentifier();
+		for (Controller c : found) {
+			System.out.println("Controller " + c.getName());
+			c.poll();
+			Component[] components = c.getComponents();
+			for (int i = 0; i < components.length; i++) {
+				Component component = components[i];
 
-					// Axes
-					if (!component.isAnalog()) {
-						if (componentIdentifier == Component.Identifier.Button.A
-								|| componentIdentifier == Component.Identifier.Button.B
-								|| componentIdentifier == Component.Identifier.Button._1
-								|| componentIdentifier == Component.Identifier.Button.X
-								|| componentIdentifier == Component.Identifier.Button.Y) {
-							if(component.getPollData() != 0.0f){
-								return c;
-							}
-						}
+				if (!component.isAnalog() && component.getPollData() != 0.0f) {
+					if (isRegisterButtonPressed(component.getIdentifier())) {
+						return c;
 					}
 				}
 			}
-		}/*
-		for(Controller c : found){
-			if(c.getName().trim() == "Gamepad F310 (Controller)"){
-				return c;
-			}
-		}*/
+		}
+
 		return null;
+	}
+
+	static boolean isRegisterButtonPressed(Identifier comp) {
+		System.out.println("component pressed: " + comp.toString());
+		
+		boolean valid = comp == Component.Identifier.Button.A;
+
+		valid |= comp == Component.Identifier.Button.B;
+
+		valid |= comp == Component.Identifier.Button._1;
+
+		valid |= comp == Component.Identifier.Button._2;
+
+		valid |= comp == Component.Identifier.Button.X;
+
+		valid |= comp == Component.Identifier.Button.Y;
+
+		return valid;
 	}
 
 }

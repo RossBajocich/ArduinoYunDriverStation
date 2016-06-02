@@ -19,8 +19,10 @@ public class GuiPanel extends JPanel {
 	public GuiPanel(final int id) {
 		this.id = id;
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridLayout(2, 2));
+		
 		Color bg = this.getBackground();
 		switch (id) {
 		case 1:
@@ -56,8 +58,6 @@ public class GuiPanel extends JPanel {
 					GamePadManager.getManager().getGamePad(id)
 							.setController(GamePadManager.getManager().getNextAvailableController());
 				}
-				// System.out.println("passing in id " + id);
-				// Window.getWindow().showGamePads(true, id);
 			}
 		});
 		registerController.setPreferredSize(new Dimension(10, 50));
@@ -71,7 +71,6 @@ public class GuiPanel extends JPanel {
 				}
 			}
 		});
-		// disable.setBackground(new Color(255,99,71));
 
 		JButton enable = new JButton("Enable Bot " + id);
 		enable.addActionListener(new ActionListener() {
@@ -82,7 +81,6 @@ public class GuiPanel extends JPanel {
 				}
 			}
 		});
-		// enable.setBackground(new Color(124, 252, 0));
 
 		enable.setPreferredSize(new Dimension(50, 30));
 		disable.setPreferredSize(new Dimension(50, 30));
@@ -114,7 +112,6 @@ public class GuiPanel extends JPanel {
 	}
 
 	public void update() {
-		// System.out.println("update of id " + id);
 		if (GamePadManager.getManager().getGamePad(id) != null) {
 			int formatLeft = GamePadManager.getManager().getGamePad(id).getNormalizedLeft();
 
@@ -123,7 +120,7 @@ public class GuiPanel extends JPanel {
 			left.setText("" + formatLeft);
 			right.setText("" + formatRight);
 		} else {
-			// System.out.println("Next Pair is null");
+
 		}
 		if (ConnectionRunner.getRunner().getSocket(id) != null) {
 			String temp = ConnectionRunner.getRunner().getSocket(id).getState();

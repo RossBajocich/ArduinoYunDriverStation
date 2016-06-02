@@ -1,51 +1,32 @@
 #include <Servo.h>
+#include <Bridge.h>
 #include <YunServer.h>
 #include <YunClient.h>
 
-YunServer server;
-Servo leftMotor, rightMotor;
+Servo leftMotor;
+Servo rightMotor;
 bool enabled = false;
+char buff[3];
+
+YunServer server;
 
 void setup() {
   Bridge.begin();
-  //Console.begin();
-
-  // Listen for incoming connection only from localhost
-  // (no one from the external network could connect)
-  //server.listenOnLocalhost();
-  //server.begin();
 }
 
 void loop() {
-  // Get clients coming from server
-  //YunClient client = server.accept();
 
-  char buff[256];
+  Bridge.get("data", buff, 3);
 
-  Bridge.get("data", buff, 256);
-
-  if (buff[0] == 'E') {
-//    if (Console) {
-//      Console.println("Enabled!");
-//    }
+  if (buff[0] == 'e' || buff[0] == 'm') {
     enable();
-  } else if (buff[0] == 'D') {
-//    if (Console) {
-//      Console.println("Disabled!");
+  } else if (buff[0] == 'd') {
       disable();
-//    }
   } else {
     if (enabled) {
       telePeriodic(buff);
     }
   }
-
-  //  // There is a new client?
-  //  if (client) {
-  //    // Process request
-  //    //process(client);
-  //    client.stop();
-  //  }
 
   delay(10); // Poll every 50ms
 }
@@ -68,32 +49,10 @@ void disable() {
   }
 }
 
-void telePeriodic(char buff[1024]) {
-  int right = 100 * (buff[3] - '0') + 10 * (buff[4] - '0') + (buff[5] - '0');
-  int left = 100 * (buff[0] - '0') + 10 * (buff[1] - '0') + (buff[2] - '0');
-/*  if (Console) {
-    Console.print("rightNum: ");
-    Console.print(right);
-    Console.print("\tleftNum: ");
-    Console.print(left);
-    Console.println();
-  }*/
+void telePeriodic(char buff[3]) {
+  int left = (((double)buff[1] / 127.0) * 90.0) + 90.0;
+  int right = (((double)buff[2] / 127.0) * 90.0) + 90.0;
 
-  if (left > -1) {
-    leftMotor.write(left);
-    rightMotor.write(right);
-  }
-}
-
-void process(YunClient client) {
-  // read the command
-  String command = client.readStringUntil('/');
-
-  if (command == "stop") {
-    leftMotor.write(90);
-    rightMotor.write(90);
-  } else if (command == "forward") {
-    leftMotor.write(150);
-    rightMotor.write(150);
-  }
+  leftMotor.write(left);
+  rightMotor.write(right);
 }

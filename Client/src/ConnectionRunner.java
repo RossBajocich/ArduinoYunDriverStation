@@ -7,7 +7,6 @@ public class ConnectionRunner implements Runnable {
 	List<YunSocketConnection> sockets = new ArrayList<YunSocketConnection>();
 	AtomicBoolean stop = new AtomicBoolean();
 	static ConnectionRunner runner;
-	List<Integer> socketRequests = new ArrayList<Integer>();
 
 	public ConnectionRunner() {
 		stop.set(false);
@@ -61,8 +60,6 @@ public class ConnectionRunner implements Runnable {
 		return null;
 	}
 
-	
-
 	protected void addSocket(YunSocketConnection socket) {
 		this.sockets.add(socket);
 	}
@@ -70,14 +67,15 @@ public class ConnectionRunner implements Runnable {
 	public void requestSocket(int id) {
 		if (getSocket(id) == null) {
 			System.out.println("Socket ID: " + id + " is null! Socket has not been created, creating now...");
-			SocketCreator.getSocketCreator().addSocketRequest(id);
+
+			SocketCreator.addSocketRequest(id);
 		}
 	}
 
 	public static String getIP(int id) {
 		switch (id) {
 		case 1:
-			return "192.168.0.101";
+			return "192.168.0.111";
 		case 2:
 			return "192.168.0.102";
 		case 3:
@@ -85,6 +83,7 @@ public class ConnectionRunner implements Runnable {
 		case 4:
 			return "192.168.0.104";
 		}
+
 		return "";
 	}
 
