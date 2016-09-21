@@ -1,0 +1,23 @@
+The raspberry pi must have the following components in order for server.py to work
+
+Pi must have server in storage, home works well
+server application must be executable
+	"chmod server 777"
+Pi must be setup to connect to SSID="OutreachRobots" psk=skunkworks1983
+	for the pi 3 this can be done with onboard wifi adapter
+	for pi 2 a usb wifi dongle or antenna adapter must be used
+	pi 1 has not been tested
+Pi must be setup as a static ip address using the pattern:
+	192.168.0.121 for red
+	192.168.0.122 for yellow
+	192.168.0.123 for blue
+	192.168.0.124 for grey
+Pi must run the server.py at startup
+	this can be done through bash.rc or any other 
+	means of running an executable file at boot
+	
+Improvements to be made
+	Most important->server auto restarts on crash
+	Next Most important->each robot sends "heartbeat" back to driverstation
+	Change to non static ips if more than 4 robots want to be added
+	many things

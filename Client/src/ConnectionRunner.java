@@ -75,13 +75,13 @@ public class ConnectionRunner implements Runnable {
 	public static String getIP(int id) {
 		switch (id) {
 		case 1:
-			return "192.168.0.111";
+			return "192.168.0.121";
 		case 2:
-			return "192.168.0.102";
+			return "192.168.0.122";
 		case 3:
-			return "192.168.0.103";
+			return "192.168.0.123";
 		case 4:
-			return "192.168.0.104";
+			return "192.168.0.124";
 		}
 
 		return "";

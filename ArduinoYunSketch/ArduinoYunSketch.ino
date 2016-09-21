@@ -1,22 +1,23 @@
-#include <Servo.h>
 #include <Bridge.h>
-#include <YunServer.h>
-#include <YunClient.h>
+#include <Servo.h>
 
 Servo leftMotor;
 Servo rightMotor;
 bool enabled = false;
-char buff[3];
-
-YunServer server;
+char buff[64];
 
 void setup() {
   Bridge.begin();
+  Console.begin();
 }
 
 void loop() {
 
-  Bridge.get("data", buff, 3);
+  String message;
+    
+  Bridge.get("data", buff, 64);
+
+  Console.println(buff);
 
   if (buff[0] == 'e' || buff[0] == 'm') {
     enable();
